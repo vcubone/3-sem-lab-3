@@ -5,9 +5,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-using namespace std;
+#include <stdlib.h>
 
-;
+using namespace std;
 
 struct spis
 {
@@ -19,23 +19,31 @@ int		kolvo(spis* a);
 void	put(spis* a, int chis);
 void	vivod(spis* a);
 
+spis*	perevod(char mas[STR]);
+int		count(int number);
+
 int     main(int argc, char* c[])
 {
 	setlocale(LC_ALL, "Russian");
 	ifstream    vhod(c[1]);
 	ofstream    vihod(c[2]);
-	char        stroka[STR];
-	spis		a;
+	string		str;
+	spis		*a = new spis;
 
 	if (vhod.is_open() && vihod.is_open())
 	{
-		//cout << c[1] << endl;
-		vhod.getline(stroka, STR);
-		cout << stroka << "asd\n";
-		put(&a, 21);
-		put(&a, 12);
-		vivod(&a);
-		cout << kolvo(&a) << endl;
+		string s = "-35";
+		int x = atoi(s.c_str());
+		cout << x << endl;
+		cout << count(x) << endl;
+
+		while (!vhod.eof())
+		{
+			vhod >> str;
+			if ((str[0] >= '0' || str[0] <= '9' || str[0] == '-') && count(atoi(str.c_str())) == str.length())
+				put(a, atoi(str.c_str()));
+		} 
+		vivod(a);
 	}
 	else
 	{
@@ -46,7 +54,64 @@ int     main(int argc, char* c[])
 	vihod.close();
 }
 
-void	put(spis *a, int chis)
+int		count(int number) 
+{
+	int count = (number == 0 || number < 0) ? 1 : 0;
+	while (number != 0) {
+		count++;
+		number /= 10;
+	}
+	return count;
+}
+
+spis*	perevod(char mas[STR])
+{
+	
+	spis*	a = new spis;
+	/*
+	int		chis = 0;
+	bool	ifchis(false);
+	bool	ifotr(false);
+
+
+	for (int i = 0; i < STR; i++)
+	{
+		if (mas[i] >= '0' || mas[i] <= '9')
+		{
+			ifchis = 1;
+			chis = chis * 10 + (mas[i]-'0');
+		}
+		else
+		{
+			if (mas[i] == '-' && ifchis == 0)
+			{
+				ifotr = 1;
+			}
+			else
+			{
+				if (ifchis == 1)
+				{
+					if (ifotr == 1)
+						chis *= -1;
+					put(a, chis);
+				}
+				
+
+				chis = 0;
+				ifchis = 0;
+				ifotr = 0;
+				if (mas[i] == '\0')
+					break;
+			}
+		}
+	}
+	*/
+	return a;
+	
+
+}
+
+void	put(spis *a, int chis)//функции списка
 {
 	spis* b = new spis;
 
