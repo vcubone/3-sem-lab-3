@@ -26,24 +26,65 @@ int     main(int argc, char* c[])
 {
 	setlocale(LC_ALL, "Russian");
 	ifstream    vhod(c[1]);
+	ifstream	vhodv2(c[1]);
 	ofstream    vihod(c[2]);
 	string		str;
 	spis		*a = new spis;
+	int			strkol(0);
+	int			strlen(0);
 
-	if (vhod.is_open() && vihod.is_open())
+	if (vhod.is_open() && vihod.is_open() && vhodv2.is_open())
 	{
-		string s = "-35";
-		int x = atoi(s.c_str());
-		cout << x << endl;
-		cout << count(x) << endl;
-
-		while (!vhod.eof())
+		while (!vhod.eof())//считывание с файла в список
 		{
 			vhod >> str;
 			if ((str[0] >= '0' || str[0] <= '9' || str[0] == '-') && count(atoi(str.c_str())) == str.length())
 				put(a, atoi(str.c_str()));
-		} 
-		vivod(a);
+		}
+
+		while (!vhodv2.eof())
+		{
+			getline(vhodv2, str);
+			strkol++;
+			strlen += str.length();
+		}
+		
+		int		kolich = kolvo(a);//список в массив
+		int*	mas = new int[kolich];
+		spis*	j = a->next;
+		for (int i = 0; i < kolich; i++)
+		{
+			mas[i] = j->a;
+			j = j->next;
+		}
+		
+
+		cout << strlen/strkol << " " << strkol << endl;//вывод в командную строку
+
+		int maxsimv = STR;//вывод в файл
+		if (kolich > 0)
+			vihod << mas[0];
+		for (int i = 1; i < kolich; i++)
+		{
+			if (maxsimv - count(mas[i]) - 1 >= 0)
+			{
+				vihod <<" "<< mas[i];
+			}
+			else
+			{
+				vihod << endl;
+				strkol--;
+				vihod <<" "<< mas[i];
+				maxsimv = STR;
+			}
+		}
+		for (strkol; strkol > 1; strkol--)
+		{
+			vihod << endl;
+		}
+
+
+
 	}
 	else
 	{
