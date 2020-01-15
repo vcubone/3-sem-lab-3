@@ -20,7 +20,7 @@ int		kolvo(spis* a);
 void	put(spis* a, int chis);
 void	vivod(spis* a);
 
-spis*	perevod(char mas[STR]);
+int comb(int* sort, int size);
 int		count(int number);
 
 int     main(int argc, char* c[])
@@ -63,7 +63,7 @@ int     main(int argc, char* c[])
 		
 		if (argc > 3 && c[3][0] == '-' &&c[3][1] == 't' && c[3][2] == '\0')
 		{
-			
+			comb(mas, kolich);
 		}
 
 		int maxsimv = STR;//вывод в файл
@@ -116,51 +116,41 @@ int		count(int number)
 	return count;
 }
 
-spis*	perevod(char mas[STR])
+int comb(int* sort, int size)// sort-название массива, size-размер массива,если нужно ввести массив с клавиатуры, то нужно создать динамический массив
 {
-	
-	spis*	a = new spis;
-	/*
-	int		chis = 0;
-	bool	ifchis(false);
-	bool	ifotr(false);
+	int n = 0; // количество перестановок
+	double fakt = 1.2473309; // фактор уменьшения
+	double step = size - 1;
 
-
-	for (int i = 0; i < STR; i++)
+	while (step >= 1)
 	{
-		if (mas[i] >= '0' || mas[i] <= '9')
+		for (int i = 0; i + step < size; ++i)
 		{
-			ifchis = 1;
-			chis = chis * 10 + (mas[i]-'0');
-		}
-		else
-		{
-			if (mas[i] == '-' && ifchis == 0)
+			if (sort[i] > sort[i + (int)step])
 			{
-				ifotr = 1;
-			}
-			else
-			{
-				if (ifchis == 1)
-				{
-					if (ifotr == 1)
-						chis *= -1;
-					put(a, chis);
-				}
-				
-
-				chis = 0;
-				ifchis = 0;
-				ifotr = 0;
-				if (mas[i] == '\0')
-					break;
+				swap(sort[i], sort[i + (int)step]);
+				n++;
 			}
 		}
+		step /= fakt;
 	}
-	*/
-	return a;
-	
+	// сортировка пузырьком
+	for (int i = 0; i < size - 1; i++)
+	{
+		bool swapped = false;
+		for (int j = 0; j < size - i - 1; j++)
+		{
+			if (sort[j] > sort[j + 1]) {
+				swap(sort[j], sort[j + 1]);
+				swapped = true;
+				++n;
+			}
+		}
 
+		if (!swapped)
+			break;
+	}
+	return n;
 }
 
 void	put(spis *a, int chis)//функции списка
