@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <stdlib.h>
+#include <ctime>
 
 using namespace std;
 
@@ -33,6 +34,7 @@ int     main(int argc, char* c[])
 	int			strkol(0);
 	int			strlen(0);
 
+	unsigned int start_time = clock();
 	if (vhod.is_open() && vihod.is_open() && vhodv2.is_open())
 	{
 		while (!vhod.eof())//считывание с файла в список
@@ -58,10 +60,14 @@ int     main(int argc, char* c[])
 			j = j->next;
 		}
 		
-
-		cout << strlen/strkol << " " << strkol << endl;//вывод в командную строку
+		
+		if (argc > 3 && c[3][0] == '-' &&c[3][1] == 't' && c[3][2] == '\0')
+		{
+			
+		}
 
 		int maxsimv = STR;//вывод в файл
+		int kolichstr = strkol;
 		if (kolich > 0)
 			vihod << mas[0];
 		for (int i = 1; i < kolich; i++)
@@ -73,12 +79,12 @@ int     main(int argc, char* c[])
 			else
 			{
 				vihod << endl;
-				strkol--;
+				kolichstr--;
 				vihod <<" "<< mas[i];
 				maxsimv = STR;
 			}
 		}
-		for (strkol; strkol > 1; strkol--)
+		for (kolichstr; kolichstr > 1; kolichstr--)
 		{
 			vihod << endl;
 		}
@@ -90,7 +96,12 @@ int     main(int argc, char* c[])
 	{
 		cout << "Файл не открылся" << endl;
 	}
+	
+	unsigned int end_time = clock();
+	cout << start_time - end_time << " " << strlen / strkol << " " << strkol << endl;//вывод в командную строку
+	
 
+	vhodv2.close();
 	vhod.close();
 	vihod.close();
 }
